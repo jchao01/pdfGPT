@@ -1,0 +1,5 @@
+# ignore everything in the env folder
+env/
+# ignore everything in the Universal Sentence Encoder folder
+Universal Sentence Encoder/
+app.py

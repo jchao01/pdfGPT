@@ -1,17 +1,24 @@
 # pdfGPT
+
+lc-serve deploy local api
+python3 app.py
+
 ## Demo
+
 1. **Demo URL**: https://bit.ly/41ZXBJM
 2. **Demo Video**:
-   
+
    [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/LzPgmmqpBk8/0.jpg)](https://www.youtube.com/watch?v=LzPgmmqpBk8)
 
-### Problem Description : 
+### Problem Description :
+
 1. When you pass a large text to Open AI, it suffers from a 4K token limit. It cannot take an entire pdf file as an input
 2. Open AI sometimes becomes overtly chatty and returns irrelevant response not directly related to your query. This is because Open AI uses poor embeddings.
 3. ChatGPT cannot directly talk to external data. Some solutions use Langchain but it is token hungry if not implemented correctly.
-4. There are a number of solutions like https://www.chatpdf.com, https://www.bespacific.com/chat-with-any-pdf, https://www.filechat.io they have poor content quality and are prone to hallucination problem. One good way to avoid hallucinations and improve truthfulness is to use improved embeddings. To solve this problem, I propose to improve embeddings with Universal Sentence Encoder family of algorithms (Read more here: https://tfhub.dev/google/collections/universal-sentence-encoder/1). 
+4. There are a number of solutions like https://www.chatpdf.com, https://www.bespacific.com/chat-with-any-pdf, https://www.filechat.io they have poor content quality and are prone to hallucination problem. One good way to avoid hallucinations and improve truthfulness is to use improved embeddings. To solve this problem, I propose to improve embeddings with Universal Sentence Encoder family of algorithms (Read more here: https://tfhub.dev/google/collections/universal-sentence-encoder/1).
 
 ### Solution: What is PDF GPT ?
+
 1. PDF GPT allows you to chat with an uploaded PDF file using GPT functionalities.
 2. The application intelligently breaks the document into smaller chunks and employs a powerful Deep Averaging Network Encoder to generate embeddings.
 3. A semantic search is first performed on your pdf content and the most relevant embeddings are passed to the Open AI.
@@ -20,22 +27,22 @@
 6. Enables APIs on Production using **[langchain-serve](https://github.com/jina-ai/langchain-serve)**.
 
 ### Docker
-Run `docker-compose -f docker-compose.yaml up` to use it with Docker compose.
 
+Run `docker-compose -f docker-compose.yaml up` to use it with Docker compose.
 
 ## Use `pdfGPT` on Production using [langchain-serve](https://github.com/jina-ai/langchain-serve)
 
 #### Local playground
+
 1. Run `lc-serve deploy local api` on one terminal to expose the app as API using langchain-serve.
 2. Run `python app.py` on another terminal for a local gradio playground.
 3. Open `http://localhost:7860` on your browser and interact with the app.
-
 
 #### Cloud deployment
 
 Make `pdfGPT` production ready by deploying it on [Jina Cloud](https://cloud.jina.ai/).
 
-`lc-serve deploy jcloud api` 
+`lc-serve deploy jcloud api`
 
 <details>
 <summary>Show command output</summary>
@@ -63,6 +70,7 @@ Make `pdfGPT` production ready by deploying it on [Jina Cloud](https://cloud.jin
 (Change the URL to your own endpoint)
 
 **PDF url**
+
 ```bash
 curl -X 'POST' \
   'https://langchain-3ff4ab2c9d.wolf.jina.ai/ask_url' \
@@ -80,6 +88,7 @@ curl -X 'POST' \
 ```
 
 **PDF file**
+
 ```bash
 QPARAMS=$(echo -n 'input_data='$(echo -n '{"question": "What'\''s the cap on room rent?", "envs": {"OPENAI_API_KEY": "'"${OPENAI_API_KEY}"'"}}' | jq -s -R -r @uri))
 curl -X 'POST' \
@@ -92,14 +101,19 @@ curl -X 'POST' \
 ```
 
 ## Running on localhost
+
 ### Credits : [Adithya S](https://github.com/200901002)
+
 1. Pull the image by entering the following command in your terminal or command prompt:
+
 ```bash
 docker pull registry.hf.space/bhaskartripathi-pdfchatter:latest
 ```
+
 2. Download the Universal Sentence Encoder locally to your project's root folder. This is important because otherwise, 915 MB will be downloaded at runtime everytime you run it.
 3. Download the encoder using this [link](https://tfhub.dev/google/universal-sentence-encoder/4?tf-hub-format=compressed).
 4. Extract the downloaded file and place it in your project's root folder as shown below:
+
 ```text
 Root folder of your project
 └───Universal Sentence Encoder
@@ -109,23 +123,29 @@ Root folder of your project
 |
 └───app.py
 ```
+
 5. If you have downloaded it locally, replace the code on line 68 in the API file:
+
 ```python
 self.use = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 ```
+
 with:
+
 ```python
 self.use = hub.load('./Universal Sentence Encoder/')
 ```
+
 6. Now, To run PDF-GPT, enter the following command:
 
 ```bash
 docker run -it -p 7860:7860 --platform=linux/amd64 registry.hf.space/bhaskartripathi-pdfchatter:latest python app.py
 ```
+
 ### **Original Source code** (for demo hosted in Hugging Face) : https://huggingface.co/spaces/bhaskartripathi/pdfChatter/blob/main/app.py
 
-
 ## UML
+
 ```mermaid
 sequenceDiagram
     participant User
@@ -151,6 +171,7 @@ sequenceDiagram
 ```
 
 ### Flowchart
+
 ```mermaid
 flowchart TB
 A[Input] --> B[URL]
@@ -163,15 +184,17 @@ G -- K-Nearest Neighbour --> K[Get Nearest Neighbour - matching citation referen
 K -- Generate Prompt --> H[Generate Answer]
 H -- Output --> I[Output]
 ```
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=bhaskatripathi/pdfGPT&type=Date)](https://star-history.com/#bhaskatripathi/pdfGPT&Date)
 I am looking for more contributors from the open source community who can take up backlog items voluntarily and maintain the application jointly with me.
 
 ## Also Try TypeTruth:
+
 TypeTruth detects whether a text is written by a human or AI. Ideal for fact-checking and content validation in the age of AI content generators.
 https://github.com/bhaskatripathi/TypeTruth
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
 
+This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.

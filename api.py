@@ -67,7 +67,7 @@ def text_to_chunks(texts, word_length=150, start_page=1):
 
 class SemanticSearch:
     def __init__(self):
-        self.use = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+        self.use = hub.load('./Universal Sentence Encoder/')
         self.fitted = False
 
     def fit(self, data, batch=1000, n_neighbors=5):
@@ -149,7 +149,7 @@ def generate_answer(question, openAI_key):
 
 
 def load_openai_key() -> str:
-    key = os.environ.get("OPENAI_API_KEY")
+    key = os.getenv("OPENAI_API_KEY")
     if key is None:
         raise ValueError(
             "[ERROR]: Please pass your OPENAI_API_KEY. Get your key here : https://platform.openai.com/account/api-keys"
