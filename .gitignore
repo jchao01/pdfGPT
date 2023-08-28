@@ -3,3 +3,4 @@ env/
 # ignore everything in the Universal Sentence Encoder folder
 Universal Sentence Encoder/
 app.py
+.env
