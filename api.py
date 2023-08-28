@@ -1,3 +1,5 @@
+# lc-serve deploy local api
+
 import os
 import re
 import shutil
@@ -12,7 +14,9 @@ import tensorflow_hub as hub
 from fastapi import UploadFile
 from lcserve import serving
 from sklearn.neighbors import NearestNeighbors
+from dotenv import load_dotenv
 
+load_dotenv()
 
 recommender = None
 
